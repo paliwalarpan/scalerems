@@ -1,13 +1,17 @@
 package com.scaler.ems.entities;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Employee {
 
-    private final String employeeId;
+    private String employeeId;
+
+    public Employee(String employeeId) {
+        this.employeeId = employeeId;
+    }
 }
