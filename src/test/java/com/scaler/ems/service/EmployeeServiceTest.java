@@ -27,7 +27,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_employee_with_valid_id() {
         String validEmployeeId = "EMP-12345";
-        when(employeeRepository.getEmployeeByEmployeeId(validEmployeeId)).thenReturn(Optional.of(new Employee(validEmployeeId)));
+        when(employeeRepository.findByEmployeeId(validEmployeeId)).thenReturn(Optional.of(new Employee(validEmployeeId)));
         EmployeeBO myDetails = employeeService.fetchEmployee(validEmployeeId);
         assertNotNull(myDetails);
         assertEquals(validEmployeeId, myDetails.getEmployeeId());
@@ -36,7 +36,7 @@ class EmployeeServiceTest {
     @Test
     void should_throw_exception_employee_with_invalid_id() {
         String invalidEmployeeId = "EMP-99999";
-        when(employeeRepository.getEmployeeByEmployeeId(invalidEmployeeId)).thenReturn(Optional.empty());
+        when(employeeRepository.findByEmployeeId(invalidEmployeeId)).thenReturn(Optional.empty());
         assertThrows(EmployeeNotFoundException.class, () -> employeeService.fetchEmployee(invalidEmployeeId));
     }
 
@@ -53,7 +53,7 @@ class EmployeeServiceTest {
     void testSaveEmployee() {
         EmployeeBO employeeBO = new EmployeeBO();
         employeeBO.setEmployeeId("Emp-12345");
-        doNothing().when(employeeRepository).save(any());
+        when(employeeRepository.save(any())).thenReturn(any());
         assertDoesNotThrow(() -> employeeService.saveEmployee(employeeBO));
     }
 

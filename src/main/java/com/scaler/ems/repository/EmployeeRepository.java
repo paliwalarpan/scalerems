@@ -1,19 +1,17 @@
 package com.scaler.ems.repository;
 
 import com.scaler.ems.entities.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface EmployeeRepository {
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    Optional<Employee> getEmployeeByEmployeeId(String employeeId);
+    Optional<Employee> findByEmployeeId(String employeeId);
 
-    List<Employee> findAll();
-
-    void save(Employee convertToEntity);
-
-    void deleteById(long id);
-
-    List<Employee> searchEmployee(String searchTerm);
+    @Query("select e from Employee e where lower( e.firstName) like :searchTerm order by e.firstName asc ")
+    List<Employee> searchEmployee(@Param("searchTerm") String searchTerm);
 }

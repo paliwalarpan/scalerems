@@ -23,7 +23,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeBO fetchEmployee(String employeeId) {
-        Optional<Employee> employeeByEmployeeId = employeeRepository.getEmployeeByEmployeeId(employeeId);
+        Optional<Employee> employeeByEmployeeId = employeeRepository.findByEmployeeId(employeeId);
         Employee emp = employeeByEmployeeId.orElseThrow(() -> new EmployeeNotFoundException("Employee not found with emp id " + employeeId));
         //convert o to employeeBo
         return convertToBo(emp);
