@@ -48,6 +48,6 @@ class AdminControllerTest {
         String empToDelete = "EMP-12345";
 
         Mockito.doNothing().when(employeeService).deleteEmployeeById(empToDelete);
-        MvcResult mvcResult = mockMvc.perform(delete("/admin/employee/{id}", empToDelete).contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(200)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(delete("/admin/employee/{id}", empToDelete).contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(204)).andReturn();
     }
 }
