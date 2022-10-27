@@ -5,6 +5,7 @@ import com.scaler.ems.exception.EmployeeNotFoundException;
 import com.scaler.ems.model.EmployeeBO;
 import com.scaler.ems.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public EmployeeBO saveEmployee(EmployeeBO employee) {
         employee.setEmployeeId(generateEmployeeId());
         Employee emp = employeeRepository.save(convertToEntity(employee));
@@ -43,12 +45,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public void deleteEmployeeById(String empId) {
         Employee emp = employeeRepository.findByEmployeeId(empId).orElseThrow(() -> new EmployeeNotFoundException("Employee not found with emp id " + empId));
         employeeRepository.delete(emp);
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public List<EmployeeBO> searchEmployeeByFirstName(String searchTerm) {
         return employeeRepository.searchEmployee(buildLikePattern(searchTerm)).stream().map(this::convertToBo).collect(Collectors.toList());
     }
