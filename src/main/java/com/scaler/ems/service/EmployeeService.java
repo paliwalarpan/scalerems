@@ -4,7 +4,7 @@ import com.scaler.ems.model.EmployeeBO;
 
 import java.util.List;
 
-interface EmployeeService {
+public interface EmployeeService {
 
     /**
      * Fetches employee by employee ID.
@@ -26,15 +26,17 @@ interface EmployeeService {
      *
      * @param employee
      */
-    void saveEmployee(EmployeeBO employee);
+    EmployeeBO saveEmployee(EmployeeBO employee);
 
     /**
      * Delete employee
      *
-     * @param id
+     * @param empId
      */
-    void deleteEmployeeById(long id);
+    void deleteEmployeeById(String empId);
 
     List<EmployeeBO> searchEmployeeByFirstName(String searchTerm);
+
+    EmployeeBO updateEmployee(String employeeId, EmployeeBO employeeBO);
 
 }

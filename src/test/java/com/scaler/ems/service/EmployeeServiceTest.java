@@ -6,6 +6,7 @@ import com.scaler.ems.model.EmployeeBO;
 import com.scaler.ems.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,16 +52,26 @@ class EmployeeServiceTest {
 
     @Test
     void testSaveEmployee() {
+        String empId = "Emp-12345";
+
         EmployeeBO employeeBO = new EmployeeBO();
-        employeeBO.setEmployeeId("Emp-12345");
-        when(employeeRepository.save(any())).thenReturn(any());
+        employeeBO.setEmployeeId(empId);
+
+        Employee entity = new Employee();
+        entity.setEmployeeId(empId);
+        when(employeeRepository.save(Mockito.any())).thenReturn(entity);
         assertDoesNotThrow(() -> employeeService.saveEmployee(employeeBO));
     }
 
     @Test
     void testDeleteEmployee() {
-        long empToDelete = 5;
-        doNothing().when(employeeRepository).deleteById(empToDelete);
+        String empToDelete = "EMP-12345";
+        Employee employee = new Employee(empToDelete);
+        EmployeeBO employeeBO = new EmployeeBO();
+        employeeBO.setEmployeeId(empToDelete);
+
+        when(employeeRepository.findByEmployeeId(empToDelete)).thenReturn(Optional.of(new Employee(empToDelete)));
+        doNothing().when(employeeRepository).delete(employee);
         assertDoesNotThrow(() -> employeeService.deleteEmployeeById(empToDelete));
     }
 
@@ -69,7 +80,7 @@ class EmployeeServiceTest {
         List<Employee> employees = List.of(new Employee("Emp-12345"), new Employee("Emp-67890"));
 
         String firstNameStartsWith = "bo";
-        when(employeeRepository.searchEmployee(firstNameStartsWith)).thenReturn(employees);
+        when(employeeRepository.searchEmployee(firstNameStartsWith + "%")).thenReturn(employees);
         List<EmployeeBO> searchResult = employeeService.searchEmployeeByFirstName(firstNameStartsWith);
         assertNotNull(searchResult);
         assertEquals(employees.size(), searchResult.size());
