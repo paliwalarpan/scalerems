@@ -4,6 +4,10 @@ import com.scaler.ems.model.AuthRequest;
 import com.scaler.ems.model.UserBo;
 import com.scaler.ems.service.UserDetailServiceImpl;
 import com.scaler.ems.util.JwtTokenUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +28,11 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Operation(summary = "Sign up user")
+    @ApiResponse(responseCode = "201", description = "Signup successful", content = {
+            @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = UserBo.class))
+    })
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerUser(@RequestBody UserBo userBo) {
